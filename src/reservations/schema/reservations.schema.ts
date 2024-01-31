@@ -10,17 +10,17 @@ export class ReservationsEntity {
   @Prop()
   questName: string;
 
-  @Prop()
+  @Prop({ unique: true })
   questEmail: string;
 
-  @Prop()
+  @Prop({ unique: true })
   roomNumber: number;
 
   @Prop()
-  checkOutDate: Date;
+  checkInDate: Date;
 
   @Prop()
-  checkInDate: Date;
+  checkOutDate: Date;
 }
 
 export const ReservationsSchema =
