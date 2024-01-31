@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ReservationsService } from '../service/reservations.service';
 import { ReservationDto, UpdateReservationDto } from '../dto/reservation.dto';
 
@@ -34,5 +42,11 @@ export class ReservationsController {
       reservationUUID,
       updateReservationDto,
     );
+  }
+
+  // Delete reservation
+  @Delete('delete-reservation/:reservationUUID')
+  async deleteReservation(@Param('reservationUUID') reservationUUID: string) {
+    return await this.reservationsService.deleteReservation(reservationUUID);
   }
 }

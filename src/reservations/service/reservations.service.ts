@@ -95,4 +95,23 @@ export class ReservationsService {
       throw new BadRequestException(error.message);
     }
   }
+
+  // Delete reservation
+  async deleteReservation(
+    reservationUUID: string,
+  ): Promise<ReservationsDocument> {
+    try {
+      const reservation = await this.reservationModel.findOne({
+        reservationUUID,
+      });
+
+      if (!reservation) throw new NotFoundException('Reservation not found!');
+
+      await reservation.deleteOne();
+
+      return reservation;
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 }
