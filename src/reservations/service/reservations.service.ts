@@ -10,7 +10,7 @@ import {
 } from '../schema/reservations.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ReservationDto } from '../dto/reservation.dto';
+import { ReservationDto, UpdateReservationDto } from '../dto/reservation.dto';
 
 @Injectable()
 export class ReservationsService {
@@ -63,6 +63,35 @@ export class ReservationsService {
 
       return reservation;
     } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  // Update reservation
+  async updateReservation(
+    reservationUUID: string,
+    updateReservationDto: UpdateReservationDto,
+  ): Promise<ReservationsDocument> {
+    try {
+      const updateReservation = await this.reservationModel
+        .findOneAndUpdate(
+          {
+            reservationUUID,
+          },
+          updateReservationDto,
+          { new: true },
+        )
+        .exec();
+
+      if (!updateReservation)
+        throw new NotFoundException('Reservation not found');
+
+      return updateReservation;
+    } catch (error) {
+      if (error.code === 11000)
+        throw new ConflictException(
+          'Duplicate entries are not allowed for email or room number!',
+        );
       throw new BadRequestException(error.message);
     }
   }

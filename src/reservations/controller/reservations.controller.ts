@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ReservationsService } from '../service/reservations.service';
-import { ReservationDto } from '../dto/reservation.dto';
+import { ReservationDto, UpdateReservationDto } from '../dto/reservation.dto';
 
 @Controller('reservations')
 export class ReservationsController {
@@ -22,5 +22,17 @@ export class ReservationsController {
   @Get('get-reservation/:reservationUUID')
   async getReservation(@Param('reservationUUID') reservationUUID: string) {
     return await this.reservationsService.getReservation(reservationUUID);
+  }
+
+  // Update reservation
+  @Patch('update-reservation/:reservationUUID')
+  async updateReservation(
+    @Body() updateReservationDto: UpdateReservationDto,
+    @Param('reservationUUID') reservationUUID: string,
+  ) {
+    return await this.reservationsService.updateReservation(
+      reservationUUID,
+      updateReservationDto,
+    );
   }
 }
