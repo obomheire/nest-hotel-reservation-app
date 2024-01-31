@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ReservationsDocument,
@@ -18,7 +19,7 @@ export class ReservationsService {
     private readonly reservationModel: Model<ReservationsDocument>,
   ) {}
 
-  // Login user can ceate journal
+  // Create reservation
   async createReservation(
     reservationDto: ReservationDto,
   ): Promise<ReservationsDocument> {
@@ -33,6 +34,35 @@ export class ReservationsService {
         throw new ConflictException(
           'Duplicate entries are not allowed for email or room number!',
         );
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  // Get all reservations
+  async getReservations(): Promise<{
+    reservations: ReservationsDocument[];
+    count: number;
+  }> {
+    try {
+      const reservations = await this.reservationModel.find({});
+
+      return { reservations, count: reservations.length };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
+
+  // Get reservation
+  async getReservation(reservationUUID: string): Promise<ReservationsDocument> {
+    try {
+      const reservation = await this.reservationModel.findOne({
+        reservationUUID,
+      });
+
+      if (!reservation) throw new NotFoundException('Reservation not found!');
+
+      return reservation;
+    } catch (error) {
       throw new BadRequestException(error.message);
     }
   }
