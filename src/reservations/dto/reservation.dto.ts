@@ -10,11 +10,11 @@ import { PartialType } from '@nestjs/mapped-types';
 export class ReservationDto {
   @IsString()
   @IsNotEmpty()
-  questName: string;
+  guestName: string;
 
   @IsEmail()
   @IsNotEmpty()
-  questEmail: string;
+  guestEmail: string;
 
   @IsNumber()
   @IsNotEmpty()

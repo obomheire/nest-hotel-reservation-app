@@ -39,14 +39,11 @@ export class ReservationsService {
   }
 
   // Get all reservations
-  async getReservations(): Promise<{
-    reservations: ReservationsDocument[];
-    count: number;
-  }> {
+  async getReservations(): Promise<ReservationsDocument[]> {
     try {
       const reservations = await this.reservationModel.find({});
 
-      return { reservations, count: reservations.length };
+      return reservations;
     } catch (error) {
       throw new BadRequestException(error.message);
     }

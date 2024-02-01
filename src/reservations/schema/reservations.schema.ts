@@ -8,10 +8,10 @@ export class ReservationsEntity {
   reservationUUID: string;
 
   @Prop()
-  questName: string;
+  guestName: string;
 
   @Prop({ unique: true })
-  questEmail: string;
+  guestEmail: string;
 
   @Prop({ unique: true })
   roomNumber: number;
